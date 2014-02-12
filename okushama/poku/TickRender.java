@@ -29,7 +29,7 @@ public class TickRender extends Ticker {
 			line = new String[] { "PAUSED" };
 		}
 		if (!Game.gameStarted) {
-			line = new String[] { "---POKI---", "","","","PRESS", "SPACE KEY" };
+			line = new String[] { "---POKU---", "","","","PRESS", "SPACE KEY" };
 		}
 		if (Game.gameFinished) {
 			if (Game.winner == 1) {
