@@ -1,3 +1,4 @@
+package okushama.poku;
 import java.util.Random;
 
 import org.lwjgl.input.Keyboard;
@@ -17,17 +18,28 @@ public class EntityPlayer extends Entity {
 
 	@Override
 	public void render() {
-		Renderer.drawRect(posX, posY, sizeX, sizeY, new float[] { playerSlot == 0 ? 1f : 0.4f, 0.4f, playerSlot == 1 ? 1f : 0.4f, 1f });
+		float[] c = {0.8f,0.8f,0.8f,1f};
+		if(playerSlot == 0){
+			if(!Game.aiPlayerOne)
+			c = new float[]{0.8f, 0.3f, 0.3f, 1f};
+		}else{
+			if(Game.twoPlayer)
+				c = new float[]{0.3f, 0.5f, 0.8f, 1f};
+		}
+		Renderer.drawRect(posX, posY, sizeX, sizeY, c);
 	}
 
 	@Override
 	public void logic() {
+		if((playerSlot == 0 && !Game.aiPlayerOne) || Game.twoPlayer){
+			
+		}
 		if (Keyboard.isKeyDown(keys[playerSlot][0])
 				&& !Keyboard.isKeyDown(keys[playerSlot][1])) {
-			posX -= 4f;
+			posX -= 2f;
 		} else if (Keyboard.isKeyDown(keys[playerSlot][1])
 				&& !Keyboard.isKeyDown(keys[playerSlot][0])) {
-			posX += 4f;
+			posX += 2f;
 		}
 		if (posX < 3) {
 			posX = 3;
@@ -49,9 +61,11 @@ public class EntityPlayer extends Entity {
 				shouldMove = true;
 			}
 		}
+		if(playerSlot == 0 && !Game.aiPlayerOne) shouldMove = false;
+		if(playerSlot == 1 && Game.twoPlayer) shouldMove = false;
 		if (shouldMove)
 		{
-			float speed = 2.5f;
+			float speed = 3.5f;
 			if (posX + (sizeX / 2) + 5 < Game.ball.posX + (Game.ball.sizeX / 2)) {
 				posX += speed;
 			}

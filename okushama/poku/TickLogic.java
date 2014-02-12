@@ -1,3 +1,4 @@
+package okushama.poku;
 import java.util.Random;
 
 import org.lwjgl.input.Keyboard;
@@ -46,9 +47,16 @@ public class TickLogic extends Ticker {
 	}
 
 	public void onMouseClick(int b) {
+		Game.sound.setGain(0.05f);
 	}
 
 	public void onMouseScroll(int dir) {
+		System.out.println(":D");
+		if(dir > 0){
+			Game.sound.setGain(Game.sound.getMusicGain()-0.1f);
+		}else if(dir < 0){
+			Game.sound.setGain(Game.sound.getMusicGain()+0.1f);
+		}
 	}
 
 	public void resetGame(boolean toMenu) {
@@ -67,13 +75,20 @@ public class TickLogic extends Ticker {
 
 	public void onKeyPress(int k) {
 		if (k == Keyboard.KEY_SPACE) {
+			if (Game.gameInAction()){
+				if(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)){
+					Game.aiPlayerOne = !Game.aiPlayerOne;
+					return;
+				}
+				Game.twoPlayer = !Game.twoPlayer;
+			}
 			if (Game.gameFinished) {
-				Game.sound.playSound("win", 1f, 1f);
+				Game.sound.playSound("win", 1f);
 				resetGame(true);
 				return;
 			}
 			if (!Game.gameStarted) {
-				Game.sound.playSound("pause", 1f, 1f);
+				Game.sound.playSound("pause", 1f);
 				resetGame(false);
 			}
 		}
@@ -82,7 +97,7 @@ public class TickLogic extends Ticker {
 				resetGame(true);
 				return;
 			}
-			Game.sound.playSound("pause", 1f, 1f);
+			Game.sound.playSound("pause", 1f);
 			Game.gamePaused = !Game.gamePaused;
 		}
 	}

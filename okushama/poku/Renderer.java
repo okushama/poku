@@ -1,3 +1,4 @@
+package okushama.poku;
 import static org.lwjgl.opengl.GL11.*;
 
 import org.lwjgl.opengl.GL11;
@@ -13,5 +14,13 @@ public class Renderer {
 		glVertex2f(x+w, y+h);
 		glVertex2f(x, y+h);
 		glEnd();
+	}
+	
+	public static void drawCenteredString(TTF font, String text, float y){
+		font.drawString(Game.WIDTH / 2 - (font.getWidth(text) / 2), y, text);
+	}
+	
+	public static void drawString(TTF font, String text, float x, float y){
+		font.drawString(x, y, text);
 	}
 }

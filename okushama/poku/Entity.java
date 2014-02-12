@@ -1,3 +1,4 @@
+package okushama.poku;
 
 public abstract class Entity {
 

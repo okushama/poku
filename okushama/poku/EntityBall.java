@@ -1,3 +1,4 @@
+package okushama.poku;
 import java.util.Random;
 
 import org.lwjgl.opengl.Display;
@@ -19,7 +20,7 @@ public class EntityBall extends Entity{
 		boolean left = new Random().nextBoolean();
 		float dir = left ? -new Random().nextFloat() : new Random().nextFloat();
 		motionX = dir;
-		motionY = left ? 2f : -2f;
+		motionY = left ? 0.3f : -0.3f;
 	}
 	
 	@Override
@@ -34,10 +35,16 @@ public class EntityBall extends Entity{
 	}
 	
 	public void hit() {
+		if(motionY > 0 && motionY < 0.8f){
+			motionY += 0.1f;
+		}
+		if(motionY < 0 && motionY > -0.8f){
+			motionY -= 0.1f;
+		}
 		if(this.posY > Game.WIDTH/2){
-			Game.sound.playSound("hit1", 1f, 1f);
+			Game.sound.playSound("hit1", 1f);
 		}else{
-			Game.sound.playSound("hit0", 1f, 1f);
+			Game.sound.playSound("hit0", 1f);
 		}
 		
 		motionY = -(motionY / 0.95f);
@@ -51,7 +58,7 @@ public class EntityBall extends Entity{
 	}
 	
 	public void miss() {
-		Game.sound.playSound("miss", 1f, 1f);
+		Game.sound.playSound("miss", 1f);
 		if(posY < Game.HEIGHT/2){
 			Game.playerTwo.score++;
 		}else{
@@ -69,13 +76,13 @@ public class EntityBall extends Entity{
 		if(posX < 3){
 			posX = 3;
 			motionX = -motionX;
-			Game.sound.playSound("wall", 1f, 1f);
+			Game.sound.playSound("wall", 1f);
 
 		}
 		if(posX > Game.WIDTH-3-sizeX){
 			posX = Game.WIDTH-3-sizeX;
 			motionX = -motionX;
-			Game.sound.playSound("wall", 1f, 1f);
+			Game.sound.playSound("wall", 1f);
 		}
 		if(posY < Game.playerOne.posY + Game.playerOne.sizeY){
 			if(posX+sizeX > Game.playerOne.posX && posX < Game.playerOne.posX+Game.playerOne.sizeX){
@@ -88,7 +95,7 @@ public class EntityBall extends Entity{
 				return;
 			}
 		}
-		if(posY+sizeY >= Game.playerTwo.posY){
+		if(posY + sizeY > Game.playerTwo.posY+1){
 			if(posX+sizeX > Game.playerTwo.posX && posX < Game.playerTwo.posX+Game.playerTwo.sizeX){
 				boolean left = new Random().nextBoolean();
 				float dir = left ? -new Random().nextFloat() : new Random().nextFloat();

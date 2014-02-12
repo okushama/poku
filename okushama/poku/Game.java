@@ -1,3 +1,4 @@
+package okushama.poku;
 import java.awt.Font;
 import java.io.InputStream;
 
@@ -18,12 +19,14 @@ public class Game {
 	public static EntityBall ball = new EntityBall();
 	public static int WIDTH = 200, HEIGHT = 200;
 	public static Sound sound;
-	public static TTF font;
+	public static TTF font, fontTiny;
 	public static boolean gamePaused = false;
 	public static boolean gameStarted = false;
 	public static boolean gameFinished = false;
 	public static int scoreToWin = 9;
 	public static int winner = -1;
+	public static boolean twoPlayer = false;
+	public static boolean aiPlayerOne = false;
 
 	public static void main(String[] args){
 		instance = new Game();
@@ -53,12 +56,14 @@ public class Game {
 		glLoadIdentity();
 		glViewport(0, 0, Display.getDisplayMode().getWidth(), Display.getDisplayMode().getHeight());
 		sound = new Sound();
-		String fontf = "font/font.TTF";
+		String fontf = "assets/font/font.TTF";
 		InputStream inputStream = ResourceLoader.getResourceAsStream(fontf);
 		java.awt.Font awtFont = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, inputStream);
 		awtFont = awtFont.deriveFont(24f);
 		font = (TTF) new TTF(awtFont, true);
-		Game.sound.playBackgroundMusic("main", 1f, 1f, true);
+		awtFont = awtFont.deriveFont(10f);
+		fontTiny = (TTF) new TTF(awtFont, true);
+		Game.sound.playBackgroundMusic("main", 1f, true);
 	}
 	
 	public void run(){

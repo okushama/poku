@@ -1,3 +1,4 @@
+package okushama.poku;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -13,6 +14,20 @@ public class Sound {
 	public String lastSoundEffect = "";
 	public HashMap<String, Audio> musicPool = new HashMap<String, Audio>();
 	public HashMap<String, Audio> soundPool = new HashMap<String, Audio>();
+	
+	private float gainMusic = 0.05f, gainSound = 0.05f;
+	
+	public float getMusicGain(){
+		return gainMusic;
+	}
+	
+	public float getSoundGain(){
+		return gainSound;
+	}
+	
+	public void setGain(float f){
+		gainSound = f;
+	}
 
 	public Sound() {
 		addSound("hit0", "hitone.wav");
@@ -24,27 +39,27 @@ public class Sound {
 		addMusic("main", "bg.ogg");
 	}
 
-	public void playSound(String sound, float pitch, float vol) {
+	public void playSound(String sound, float pitch) {
 		try {
-			soundPool.get(sound).playAsSoundEffect(pitch, vol, false);
+			soundPool.get(sound).playAsSoundEffect(pitch, this.getSoundGain(), false);
 			lastSoundEffect = sound;
 		} catch (Exception e) {
 		}
 	}
 
-	public void playSoundAtEnt(String sound, float pitch, float vol, Entity ent) {
+	public void playSoundAtEnt(String sound, float pitch, Entity ent) {
 		try {
-			soundPool.get(sound).playAsSoundEffect(pitch, vol, false,
+			soundPool.get(sound).playAsSoundEffect(pitch, this.getSoundGain(), false,
 					ent.posX / 2, ent.posY / 2, 0F);
 		} catch (Exception e) {
 		}
 	}
 
-	public void playBackgroundMusic(String sound, float pitch, float vol,
+	public void playBackgroundMusic(String sound, float pitch,
 			boolean looped) {
 		try {
 
-			musicPool.get(sound).playAsMusic(pitch, vol, looped);
+			musicPool.get(sound).playAsSoundEffect(pitch, this.getMusicGain(), looped);
 			currentBgMusic = sound;
 		} catch (Exception e) {
 			System.out.println("Could not find sound: " + sound);
@@ -79,12 +94,12 @@ public class Sound {
 			Audio audio = null;
 			if (file.contains(".wav")) {
 				audio = AudioLoader.getAudio("WAV",
-						ResourceLoader.getResourceAsStream("sound/" + file));
+						ResourceLoader.getResourceAsStream("assets/sound/" + file));
 				soundPool.put(key, audio);
 			}
 			if (file.contains(".ogg")) {
 				audio = AudioLoader.getAudio("OGG",
-						ResourceLoader.getResourceAsStream("sound/" + file));
+						ResourceLoader.getResourceAsStream("assets/sound/" + file));
 				musicPool.put(key, audio);
 			}
 		} catch (Exception e) {
@@ -96,10 +111,10 @@ public class Sound {
 			Audio audio = null;
 			if (file.contains(".wav"))
 				audio = AudioLoader.getAudio("WAV",
-						ResourceLoader.getResourceAsStream("sound/" + file));
+						ResourceLoader.getResourceAsStream("assets/sound/" + file));
 			if (file.contains(".ogg"))
 				audio = AudioLoader.getAudio("OGG",
-						ResourceLoader.getResourceAsStream("sound/" + file));
+						ResourceLoader.getResourceAsStream("assets/sound/" + file));
 			musicPool.put(key, audio);
 		} catch (Exception e) {
 		}
