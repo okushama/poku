@@ -2,6 +2,7 @@ package okushama.poku;
 
 public abstract class Ticker implements Runnable{
 	
+
 	private Thread tickThread = new Thread(this);
 	private boolean isRunning = false;
 	private long threadSleep = 20;
@@ -21,7 +22,7 @@ public abstract class Ticker implements Runnable{
 	public void run(){
 		while(isRunning){			
 			try{
-				onTick();
+				onTick(1f);
 				Thread.sleep(threadSleep);
 			}catch(Exception e){
 				e.printStackTrace();
@@ -29,6 +30,6 @@ public abstract class Ticker implements Runnable{
 		}
 	}
 	
-	public abstract void onTick();
+	public abstract void onTick(float partialTick);
 
 }

@@ -7,7 +7,7 @@ import org.lwjgl.input.Mouse;
 public class TickLogic extends Ticker {
 
 	@Override
-	public void onTick() {
+	public void onTick(float partialTick) {
 		//Game.sound.playBackgroundMusic("main", 1f, 1f, true);
 		if (Game.winner > -1) {
 			Game.gameFinished = true;
@@ -32,14 +32,14 @@ public class TickLogic extends Ticker {
 			onKeyHeld(Keyboard.getEventKey());
 		}
 		if (Game.gameInAction()) {
-			Game.playerOne.logic();
+			Game.playerOne.logic(partialTick);
 			if(Keyboard.isKeyDown(Keyboard.KEY_M)){
 					Game.playerOne.magnetizeBalls();
 			}
-			Game.playerTwo.logic();
+			Game.playerTwo.logic(partialTick);
 			for(int i = 0; i < Game.balls.size(); i++){
 			EntityBall ball = Game.balls.get(i);
-				ball.logic();
+				ball.logic(partialTick);
 			}
 			if (Game.playerOne.score >= Game.scoreToWin) {
 				Game.winner = 0;

@@ -7,14 +7,14 @@ import org.lwjgl.opengl.Display;
 public class TickRender extends Ticker {
 
 	@Override
-	public void onTick() {
+	public void onTick(float partialTick) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		if (Game.gameInAction()) {
-			Game.playerOne.render();
-			Game.playerTwo.render();
+			Game.playerOne.render(partialTick);
+			Game.playerTwo.render(partialTick);
 			for(EntityBall ball : Game.balls){
-				ball.render();
+				ball.render(partialTick);
 			}
 		}
 		Renderer.drawRect(0, Game.HEIGHT - 30, Game.WIDTH, 30, new float[] {

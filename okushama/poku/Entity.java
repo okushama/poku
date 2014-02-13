@@ -14,8 +14,8 @@ public abstract class Entity {
 		
 	}
 	
-	public abstract void render();
+	public abstract void render(float partialTick);
 	
-	public abstract void logic();
+	public abstract void logic(float partialTick);
 	
 }

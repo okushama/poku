@@ -3,6 +3,9 @@ import java.awt.Font;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.openal.AL;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.newdawn.slick.TrueTypeFont;
@@ -13,6 +16,8 @@ import static org.lwjgl.opengl.GL11.*;
 public class Game {
 
 	public static Game instance = null;
+	public static boolean isRunning = false;
+	public Timer timer = new Timer();
 	public Ticker tickLogic = new TickLogic();
 	public Ticker tickRender = new TickRender();
 	public static EntityPlayer playerOne = new EntityPlayer(0);
@@ -81,6 +86,7 @@ public class Game {
 	
 	
 	public void init() throws Exception{
+		isRunning = true;
 		Display.setTitle("o7");
 		Display.setDisplayMode(new DisplayMode(WINDOW_WIDTH, WINDOW_HEIGHT));
 		Display.create();
@@ -102,14 +108,31 @@ public class Game {
 		Game.sound.playBackgroundMusic("main", 1f, true);
 	}
 	
+	public void cleanup(){
+		isRunning = false;
+		tickRender.destroy();
+		tickLogic.destroy();
+		Display.destroy();
+		Keyboard.destroy();
+		Mouse.destroy();
+		AL.destroy();
+		System.out.println("Clean up successful!");
+		System.exit(0);
+	}
+	
 	public void run(){
-		tickLogic.create(10);
+		//tickLogic.create(10);
+		timer.start();
+		timer.lastFPS = timer.getTime();
 		while(true){
+			float delta = timer.getDelta()/10;
+			//System.out.println(delta);
 			Display.update();
-			tickRender.onTick();
+			tickLogic.onTick(delta);
+			tickRender.onTick(delta);
 			Display.sync(60);
 			if(Display.isCloseRequested()){
-				System.exit(0);
+				cleanup();
 			}
 		}
 	}

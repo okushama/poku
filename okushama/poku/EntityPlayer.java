@@ -13,13 +13,13 @@ public class EntityPlayer extends Entity {
 	public float lastX = -999f;
 
 	public EntityPlayer(int slot) {
-		sizeX = 24;
-		sizeY = 6;
+		sizeX = 23;
+		sizeY = 20;
 		playerSlot = slot;
 	}
 
 	@Override
-	public void render() {
+	public void render(float partialTick) {
 		float[] c = {0.8f,0.8f,0.8f,1f};
 		if(playerSlot == 0){
 			if(!Game.aiPlayerOne)
@@ -32,25 +32,27 @@ public class EntityPlayer extends Entity {
 	}
 
 	@Override
-	public void logic() {
+	public void logic(float partialTick) {
 		lastX = posX;
 		if((playerSlot == 0 && !Game.aiPlayerOne) || Game.twoPlayer){
 			
 		}
+		
+		float spd = 3f;
 		if (Keyboard.isKeyDown(keys[playerSlot][0])
 				&& !Keyboard.isKeyDown(keys[playerSlot][1])) {
-			posX -= 2f;
+			posX -= spd * partialTick;
 		} else if (Keyboard.isKeyDown(keys[playerSlot][1])
 				&& !Keyboard.isKeyDown(keys[playerSlot][0])) {
-			posX += 2f;
+			posX += spd * partialTick;
 		}
-		if (posX < 3) {
-			posX = 3;
+		if (posX < 0) {
+			posX = 0;
 		}
-		if (posX > Game.WIDTH - sizeX - 3) {
-			posX = Game.WIDTH - sizeX - 3;
+		if (posX > Game.WIDTH - sizeX) {
+			posX = Game.WIDTH - sizeX;
 		}
-		posY = playerSlot == 0 ? 2 : Game.HEIGHT - 36;
+		posY = playerSlot == 0 ? -12 : Game.HEIGHT - 36;
 
 		// Ai Portion
 		boolean topHalf = playerSlot == 1;
@@ -58,11 +60,13 @@ public class EntityPlayer extends Entity {
 		EntityBall ball = Game.getClosestBall(this);
 		if(ball != null){
 			if(topHalf){
-				if(ball.posY+(ball.sizeY/2) > (Game.HEIGHT/2) - 15 && (ball.posY+ball.sizeY) < posY){
+				if(ball.posY+(ball.sizeY/2) > (Game.HEIGHT/2) - 15 && (ball.posY+ball.sizeY) < posY + sizeY)
+				{
 					shouldMove = true;
 				}
 			}else{
-				if(ball.posY+(ball.sizeY/2) < (Game.HEIGHT/2) - 30 && ball.posY > posY + sizeY){
+				if(ball.posY+(ball.sizeY/2) < (Game.HEIGHT/2) - 30 && ball.posY > posY)
+				{
 					shouldMove = true;
 				}
 			}
@@ -70,12 +74,12 @@ public class EntityPlayer extends Entity {
 			if(playerSlot == 1 && Game.twoPlayer) shouldMove = false;
 			if (shouldMove)
 			{
-				float speed = 4f;
+				float speed = 3f;
 				if (posX + (sizeX / 2) + 5 < ball.posX + (ball.sizeX / 2)) {
-					posX += speed;
+					posX += speed * partialTick;
 				}
 				if (posX + (sizeX / 2) - 5 > ball.posX + (ball.sizeX / 2)) {
-					posX -= speed;
+					posX -= speed * partialTick;
 				}
 			}
 		}
