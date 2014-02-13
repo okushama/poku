@@ -1,9 +1,12 @@
 package okushama.poku;
 
+import java.util.Random;
+
 public abstract class Entity {
 
 	public float posX, posY;
 	public float sizeX = 1, sizeY = 1;
+	public final Random rand = new Random();
 	
 	public Entity(){
 		posX = 0;

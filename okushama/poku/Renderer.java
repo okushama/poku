@@ -17,10 +17,12 @@ public class Renderer {
 	}
 	
 	public static void drawCenteredString(TTF font, String text, float y){
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		font.drawString(Game.WIDTH / 2 - (font.getWidth(text) / 2), y, text);
 	}
 	
 	public static void drawString(TTF font, String text, float x, float y){
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		font.drawString(x, y, text);
 	}
 }

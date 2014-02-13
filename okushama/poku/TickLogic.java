@@ -33,8 +33,14 @@ public class TickLogic extends Ticker {
 		}
 		if (Game.gameInAction()) {
 			Game.playerOne.logic();
+			if(Keyboard.isKeyDown(Keyboard.KEY_M)){
+					Game.playerOne.magnetizeBalls();
+			}
 			Game.playerTwo.logic();
-			Game.ball.logic();
+			for(int i = 0; i < Game.balls.size(); i++){
+			EntityBall ball = Game.balls.get(i);
+				ball.logic();
+			}
 			if (Game.playerOne.score >= Game.scoreToWin) {
 				Game.winner = 0;
 				return;
@@ -66,7 +72,7 @@ public class TickLogic extends Ticker {
 			Game.gameStarted = false;
 		}
 		Game.gamePaused = false;
-		Game.ball.reset();
+		Game.resetBalls();
 		Game.winner = -1;
 		Game.playerOne.score = 0;
 		Game.playerTwo.score = 0;
@@ -74,6 +80,25 @@ public class TickLogic extends Ticker {
 	}
 
 	public void onKeyPress(int k) {
+		if(k == Keyboard.KEY_RETURN){
+			if(Game.gameInAction()){
+				if(!Game.aiPlayerOne){
+					Game.aiPlayerOne = true;
+					Game.twoPlayer = false;
+				}else{
+					Game.aiPlayerOne = false;
+				}
+			}
+		}
+		if(k == Keyboard.KEY_R){
+			this.resetGame(true);
+		}
+		if (k == Keyboard.KEY_B){
+			EntityBall ball = new EntityBall();
+			ball.reset();
+			Game.balls.add(ball);
+		}
+		
 		if (k == Keyboard.KEY_SPACE) {
 			if (Game.gameInAction()){
 				if(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)){
@@ -103,6 +128,7 @@ public class TickLogic extends Ticker {
 	}
 
 	public void onKeyHeld(int k) {
+		
 	}
 
 }
